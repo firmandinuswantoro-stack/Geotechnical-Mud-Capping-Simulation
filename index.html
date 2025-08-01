@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabel Simulasi Penutupan Mud Disposal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .input-label { color: #374151; font-weight: 500; }
+        .input-field { border-radius: 0.25rem; border: 1px solid #d1d5db; padding: 0.25rem 0.5rem; background-color: white; width: 100%; }
+        .input-unit { color: #6b7280; font-size: 0.875rem; }
+        .table-header { background-color: #e5e7eb; font-weight: 600; text-align: center; border: 1px solid #d1d5db; padding: 0.5rem; }
+        .table-cell { border: 1px solid #d1d5db; padding: 0.5rem; text-align: center; background-color: white; }
+        .card { background-color: white; border: 1px solid #d1d5db; padding: 1rem; }
+        .notes-box { border: 1px solid #d1d5db; padding: 1rem; min-height: 100px; background-color: white; }
+        .kesimpulan-red { color: #dc2626; font-weight: bold; }
+        .kesimpulan-green { color: #16a34a; font-weight: bold; }
+    </style>
+</head>
+<body class="p-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="text-xl font-bold">PT. Berau Coal</h1>
+            <p class="text-lg">Dept. Geotechnical And Hydrology</p>
+            <p class="text-lg font-semibold">Tabel Simulasi Penutupan Mud Disposal</p>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="grid grid-cols-12 gap-4">
+            <!-- Left Inputs -->
+            <div class="col-span-12 lg:col-span-3 space-y-4">
+                <div class="card">
+                    <h3 class="font-bold text-center mb-2 bg-gray-200">Geometri Kolam Lumpur</h3>
+                    <div class="space-y-2">
+                        <div class="grid grid-cols-3 items-center">
+                             <label for="areaDefinition" class="input-label">Define Area By</label>
+                             <select id="areaDefinition" class="input-field col-span-2">
+                                 <option value="dimensions">Dimensions (P x L)</option>
+                                 <option value="total_area">Total Area (m²)</option>
+                             </select>
+                        </div>
+                        <div id="dimensionsInputs">
+                            <div class="grid grid-cols-3 items-center mt-2">
+                                <label for="sumpPanjang" class="input-label">Panjang</label>
+                                <input type="number" id="sumpPanjang" class="input-field col-span-1" value="173">
+                                <span class="input-unit text-right">meter</span>
+                            </div>
+                            <div class="grid grid-cols-3 items-center mt-2">
+                                <label for="sumpLebar" class="input-label">Lebar</label>
+                                <input type="number" id="sumpLebar" class="input-field col-span-1" value="224">
+                                <span class="input-unit text-right">meter</span>
+                            </div>
+                        </div>
+                         <div id="totalAreaInput" class="hidden">
+                             <div class="grid grid-cols-3 items-center mt-2">
+                                 <label for="sumpArea" class="input-label">Area</label>
+                                 <input type="number" id="sumpArea" class="input-field col-span-1" value="38752">
+                                 <span class="input-unit text-right">m²</span>
+                             </div>
+                         </div>
+                        <div class="grid grid-cols-3 items-center mt-2">
+                            <label for="sumpTinggi" class="input-label">Tinggi</label>
+                            <input type="number" id="sumpTinggi" class="input-field col-span-1" value="15">
+                            <span class="input-unit text-right">meter</span>
+                        </div>
+                        <div class="grid grid-cols-3 items-center mt-2">
+                            <label for="bedaElevasi" class="input-label">Beda elevasi</label>
+                            <input type="number" id="bedaElevasi" class="input-field col-span-1" value="7">
+                            <span class="input-unit text-right">meter</span>
+                        </div>
+                        <div class="grid grid-cols-3 items-center mt-2">
+                            <label class="input-label">Volume Lumpur</label>
+                            <span id="volumeLumpur" class="font-bold"></span>
+                            <span class="input-unit text-right">m³</span>
+                        </div>
+                        <div class="grid grid-cols-3 items-center mt-2">
+                            <label class="input-label">Volume OB full</label>
+                            <span id="volumeOBFull" class="font-bold"></span>
+                            <span class="input-unit text-right">Bcm</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="grid grid-cols-3 items-center">
+                        <label for="rasioPeluruhan" class="input-label">Rasio Peluruhan OB</label>
+                        <input type="number" id="rasioPeluruhan" class="input-field bg-yellow-100 col-span-1" value="0.3">
+                        <span class="input-unit text-right"></span>
+                    </div>
+                     <div class="grid grid-cols-3 items-center mt-2">
+                        <label for="elevasiEmbankment" class="input-label">Elevasi embankment</label>
+                        <input type="number" id="elevasiEmbankment" class="input-field bg-yellow-100 col-span-1" value="-70">
+                        <span class="input-unit text-right"></span>
+                    </div>
+                    <div class="grid grid-cols-3 items-center mt-2">
+                        <label for="catchmentArea" class="input-label">Catchment Area</label>
+                        <input type="number" id="catchmentArea" class="input-field bg-yellow-100 col-span-1" value="80">
+                        <span class="input-unit text-right">Hectare</span>
+                    </div>
+                    <div class="grid grid-cols-3 items-center mt-2">
+                        <label for="caType" class="input-label">CA Type</label>
+                        <select id="caType" class="input-field bg-yellow-100 col-span-2">
+                            <option value="3.30">Disposal OB/ Pit</option>
+                            <option value="2.75">Disposal Soil</option>
+                            <option value="2.20">Disposal Revegetasi</option>
+                            <option value="1.65">Original/ Hutan</option>
+                        </select>
+                    </div>
+                     <div class="grid grid-cols-3 items-center mt-2">
+                        <label class="input-label">Sedimentasi</label>
+                        <span id="sedimentasi" class="font-bold"></span>
+                        <span class="input-unit text-right">Bcm/day</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Inputs -->
+            <div class="col-span-12 lg:col-span-3 space-y-4">
+                 <div class="card">
+                    <h3 class="font-bold text-center mb-2 bg-gray-200">Geometri Bench</h3>
+                    <div class="space-y-2">
+                        <div class="grid grid-cols-3 items-center">
+                            <label for="benchPanjang" class="input-label">Panjang</label>
+                            <input type="number" id="benchPanjang" class="input-field col-span-1" value="173">
+                            <span class="input-unit text-right">meter</span>
+                        </div>
+                        <div class="grid grid-cols-3 items-center">
+                            <label for="benchLebar" class="input-label">Lebar</label>
+                            <input type="number" id="benchLebar" class="input-field col-span-1" value="50">
+                            <span class="input-unit text-right">meter</span>
+                        </div>
+                        <div class="grid grid-cols-3 items-center">
+                            <label for="benchTinggi" class="input-label">Tinggi</label>
+                            <input type="number" id="benchTinggi" class="input-field col-span-1" value="10">
+                            <span class="input-unit text-right">meter</span>
+                        </div>
+                        <div class="grid grid-cols-3 items-center">
+                            <label class="input-label">Volume</label>
+                            <span id="benchVolume" class="font-bold"></span>
+                            <span class="input-unit text-right">m³</span>
+                        </div>
+                         <div class="grid grid-cols-3 items-center">
+                            <label for="compoundMax" class="input-label">Compound Max</label>
+                            <input type="number" id="compoundMax" class="input-field col-span-1" value="4">
+                            <span class="input-unit text-right"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="space-y-2">
+                        <div class="grid grid-cols-3 items-center">
+                            <label for="tipeLoader" class="input-label">Tipe Unit Loader</label>
+                            <select id="tipeLoader" class="input-field col-span-2">
+                                <option value="1600">Komatsu-PC4000</option>
+                                <option value="1400">Hitachi-PC3600</option>
+                                <option value="1000">Hitachi-PC2500</option>
+                                <option value="650">Komatsu-PC2000</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-3 items-center">
+                            <label for="jumlahLoader" class="input-label">Jumlah Unit Loader</label>
+                            <input type="number" id="jumlahLoader" class="input-field col-span-1" value="1">
+                            <span class="input-unit text-right">unit</span>
+                        </div>
+                        <div class="grid grid-cols-3 items-center">
+                            <label for="jarakAngkut" class="input-label">Jarak Angkut</label>
+                            <input type="number" id="jarakAngkut" class="input-field col-span-1" value="2135">
+                            <span class="input-unit text-right">meter</span>
+                        </div>
+                         <div class="grid grid-cols-3 items-center">
+                            <label for="tipeHauler" class="input-label">tipe Unit Hauler</label>
+                             <select id="tipeHauler" class="input-field col-span-2">
+                                <option value="500">Cat 777</option>
+                                <option value="500">Cat 785</option>
+                                <option value="500">Cat 789</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-3 items-center">
+                            <label for="efektifWorkingHour" class="input-label">Efektif Working hour</label>
+                            <input type="number" id="efektifWorkingHour" class="input-field" value="13.5">
+                            <span class="input-unit text-right">Hour</span>
+                        </div>
+                        <div class="grid grid-cols-3 items-center">
+                            <label class="input-label">Jumlah Unit Hauler</label>
+                            <span id="jumlahHauler" class="font-bold"></span>
+                            <span class="input-unit text-right">unit</span>
+                        </div>
+                        <div class="grid grid-cols-3 items-center">
+                            <label class="input-label">Pty</label>
+                            <span id="ptyDisplay" class="font-bold"></span>
+                            <span class="input-unit text-right">Bcm/hari</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Results Table -->
+            <div class="col-span-12 lg:col-span-6">
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th class="table-header">Stage</th>
+                            <th class="table-header">RL</th>
+                            <th class="table-header">Volume Lumpur</th>
+                            <th class="table-header">Progress Timbunan maximal</th>
+                            <th class="table-header">Perhitungan Simulasi</th>
+                            <th class="table-header">Kesimpulan</th>
+                            <th class="table-header">Volume Lumpur</th>
+                            <th class="table-header">Progress Timbunan</th>
+                            <th class="table-header">Sisa Lumpur</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mainResultsBody">
+                        <!-- JS will populate this -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Bottom Left Time Table -->
+            <div class="col-span-12 lg:col-span-6">
+                 <div class="grid grid-cols-12 gap-4">
+                    <div class="col-span-12 lg:col-span-8">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th class="table-header">Stage</th>
+                                    <th class="table-header">RL</th>
+                                    <th class="table-header">Total OB</th>
+                                    <th class="table-header">Jam</th>
+                                    <th class="table-header">Hari</th>
+                                    <th class="table-header">Minggu</th>
+                                </tr>
+                            </thead>
+                            <tbody id="timeResultsBody">
+                                <!-- JS will populate this -->
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="table-header" colspan="2">Grand Total</td>
+                                    <td id="grandTotalOB" class="table-header"></td>
+                                    <td id="grandTotalJam" class="table-header"></td>
+                                    <td id="grandTotalHari" class="table-header"></td>
+                                    <td id="grandTotalMinggu" class="table-header"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                 </div>
+            </div>
+            
+            <!-- Bottom Right Notes -->
+            <div class="col-span-12 lg:col-span-6">
+                <div class="card">
+                    <h3 class="font-bold mb-2">Notes</h3>
+                    <div class="notes-box">
+                        <p>1. Kegiatan Operasional mengacu P-MMD-10</p>
+                        <p>2. Pembentukan Disposal Maksimal Per 5 meter</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-6">
+             <button id="runSimulationBtn" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors">Run Simulation</button>
+        </div>
+    </div>
+
+    <script>
+        const F = (num, dec = 0) => num.toLocaleString('id-ID', {maximumFractionDigits: dec, minimumFractionDigits: dec});
+
+        function runSimulation() {
+            // --- Get All Input Values ---
+            const areaDefinition = document.getElementById('areaDefinition').value;
+            let sumpArea = 0;
+            if (areaDefinition === 'dimensions') {
+                const sumpPanjang = parseFloat(document.getElementById('sumpPanjang').value) || 0;
+                const sumpLebar = parseFloat(document.getElementById('sumpLebar').value) || 0;
+                sumpArea = sumpPanjang * sumpLebar;
+            } else {
+                sumpArea = parseFloat(document.getElementById('sumpArea').value) || 0;
+            }
+
+            const sumpTinggi = parseFloat(document.getElementById('sumpTinggi').value) || 0;
+            const bedaElevasi = parseFloat(document.getElementById('bedaElevasi').value) || 0;
+            const rasioPeluruhan = parseFloat(document.getElementById('rasioPeluruhan').value) || 0;
+            const elevasiEmbankment = parseFloat(document.getElementById('elevasiEmbankment').value) || 0;
+            const catchmentArea = parseFloat(document.getElementById('catchmentArea').value) || 0;
+            const lajuSedimentasi = parseFloat(document.getElementById('caType').value) || 0;
+            const benchPanjang = parseFloat(document.getElementById('benchPanjang').value) || 0;
+            const benchLebar = parseFloat(document.getElementById('benchLebar').value) || 0;
+            const benchTinggi = parseFloat(document.getElementById('benchTinggi').value) || 0;
+            const compoundMax = parseInt(document.getElementById('compoundMax').value) || 0;
+            const ptyJam = parseFloat(document.getElementById('tipeLoader').value) || 0;
+            const jumlahLoader = parseInt(document.getElementById('jumlahLoader').value) || 0;
+            const jarakAngkut = parseFloat(document.getElementById('jarakAngkut').value) || 0;
+            const kebutuhanUnitJarak = parseFloat(document.getElementById('tipeHauler').value) || 0;
+            const ewh = parseFloat(document.getElementById('efektifWorkingHour').value) || 0;
+
+            // --- Perform All Pre-calculations & Update Displays ---
+            
+            const initialVolumeLumpur = sumpArea * (sumpTinggi - bedaElevasi);
+            document.getElementById('volumeLumpur').textContent = F(initialVolumeLumpur);
+
+            const volumeOBFull = sumpArea * sumpTinggi;
+            document.getElementById('volumeOBFull').textContent = F(volumeOBFull);
+
+            const benchVolume = benchPanjang * benchLebar * benchTinggi;
+            document.getElementById('benchVolume').textContent = F(benchVolume);
+
+            const ptyHarian = Math.floor(ptyJam * jumlahLoader * ewh);
+            document.getElementById('ptyDisplay').textContent = F(ptyHarian);
+
+            const jumlahHauler = kebutuhanUnitJarak > 0 ? Math.floor((jarakAngkut / kebutuhanUnitJarak) * jumlahLoader) : 0;
+            document.getElementById('jumlahHauler').textContent = F(jumlahHauler);
+            
+            const sedimentasi = catchmentArea * lajuSedimentasi;
+            document.getElementById('sedimentasi').textContent = F(sedimentasi, 1);
+            
+
+            // --- Main Simulation Loop ---
+            const mainResultsBody = document.getElementById('mainResultsBody');
+            const timeResultsBody = document.getElementById('timeResultsBody');
+            mainResultsBody.innerHTML = '';
+            timeResultsBody.innerHTML = '';
+
+            let sisaLumpurCurrentStage = initialVolumeLumpur;
+            let totalOB = 0;
+            let grandTotalOB = 0;
+            let grandTotalJam = 0;
+            let grandTotalHari = 0;
+            let grandTotalMinggu = 0;
+            let lastProgressTimbunanMaximal = 0;
+
+            for (let i = 1; i <= compoundMax; i++) {
+                const rl = elevasiEmbankment + ((i - 1) * benchTinggi);
+                const volumeLumpurAwalStage = sisaLumpurCurrentStage;
+                
+                totalOB += benchVolume;
+                
+                let currentProgressTimbunanMaximal;
+                if (i === 1) {
+                    currentProgressTimbunanMaximal = volumeOBFull;
+                } else {
+                    const increaseFactor = (i === 2) ? 1.10 : 1.06;
+                    currentProgressTimbunanMaximal = lastProgressTimbunanMaximal * increaseFactor;
+                }
+                lastProgressTimbunanMaximal = currentProgressTimbunanMaximal;
+
+                const perhitunganSimulasi = volumeLumpurAwalStage - (rasioPeluruhan * currentProgressTimbunanMaximal);
+                
+                let kesimpulan;
+                if (perhitunganSimulasi <= 0) {
+                    kesimpulan = 'Tertutup';
+                } else {
+                    kesimpulan = volumeLumpurAwalStage > benchVolume ? 'Butuh Dinaikan' : 'Tertutup';
+                }
+                
+                let displaySisaLumpur;
+                const hari = ptyHarian > 0 ? totalOB / ptyHarian : 0;
+                if (kesimpulan === 'Butuh Dinaikan') {
+                    displaySisaLumpur = volumeLumpurAwalStage - (totalOB * rasioPeluruhan) + (sedimentasi * hari);
+                } else {
+                    displaySisaLumpur = 0;
+                }
+                sisaLumpurCurrentStage = displaySisaLumpur;
+
+                // Main Table Row
+                const mainRow = document.createElement('tr');
+                let volLumpurRight = F(volumeLumpurAwalStage);
+                let progTimbunanRight = F(totalOB);
+                let sisaLumpurRight = F(displaySisaLumpur);
+
+                if (kesimpulan === 'Tertutup') {
+                    volLumpurRight = '-';
+                    progTimbunanRight = '-';
+                    sisaLumpurRight = '0';
+                }
+
+                mainRow.innerHTML = `
+                    <td class="table-cell">${i}</td>
+                    <td class="table-cell">${rl}</td>
+                    <td class="table-cell">${F(volumeLumpurAwalStage)}</td>
+                    <td class="table-cell">${F(currentProgressTimbunanMaximal)}</td>
+                    <td class="table-cell">${F(perhitunganSimulasi)}</td>
+                    <td class="table-cell ${kesimpulan === 'Tertutup' ? 'kesimpulan-green' : 'kesimpulan-red'}">${kesimpulan}</td>
+                    <td class="table-cell">${volLumpurRight}</td>
+                    <td class="table-cell">${progTimbunanRight}</td>
+                    <td class="table-cell">${sisaLumpurRight}</td>
+                `;
+                mainResultsBody.appendChild(mainRow);
+                
+                // Time Table Row
+                let displayTotalOB = totalOB;
+                if (kesimpulan === 'Tertutup') {
+                    displayTotalOB = currentProgressTimbunanMaximal;
+                }
+
+                const jam = ptyJam > 0 ? displayTotalOB / (ptyJam * jumlahLoader) : 0;
+                const displayHari = ptyHarian > 0 ? displayTotalOB / ptyHarian : 0;
+                const displayMinggu = displayHari / 7;
+                
+                const timeRow = document.createElement('tr');
+                timeRow.innerHTML = `
+                    <td class="table-cell">${i}</td>
+                    <td class="table-cell">${rl}</td>
+                    <td class="table-cell">${F(displayTotalOB)}</td>
+                    <td class="table-cell">${F(jam)}</td>
+                    <td class="table-cell">${F(displayHari)}</td>
+                    <td class="table-cell">${F(displayMinggu, 1)}</td>
+                `;
+                timeResultsBody.appendChild(timeRow);
+                
+                // Add current stage's values to the grand total sums
+                grandTotalOB += displayTotalOB;
+                grandTotalJam += jam;
+                grandTotalHari += displayHari;
+                grandTotalMinggu += displayMinggu;
+
+                if (kesimpulan === 'Tertutup') break;
+            }
+            
+            // Fill remaining rows to match Excel's appearance
+            for (let i = mainResultsBody.children.length + 1; i <= 15; i++) {
+                 mainResultsBody.innerHTML += `<tr><td class="table-cell">-</td><td class="table-cell">-</td><td class="table-cell">-</td><td class="table-cell">-</td><td class="table-cell">-</td><td class="table-cell">-</td><td class="table-cell">-</td><td class="table-cell">-</td><td class="table-cell">-</td></tr>`;
+            }
+             for (let i = timeResultsBody.children.length + 1; i <= 10; i++) {
+                 timeResultsBody.innerHTML += `<tr><td class="table-cell">-</td><td class="table-cell">-</td><td class="table-cell">-</td><td class="table-cell">-</td><td class="table-cell">-</td><td class="table-cell">-</td></tr>`;
+            }
+
+            // Update Grand Totals with the summed values
+            document.getElementById('grandTotalOB').textContent = F(grandTotalOB);
+            document.getElementById('grandTotalJam').textContent = F(grandTotalJam);
+            document.getElementById('grandTotalHari').textContent = F(grandTotalHari);
+            document.getElementById('grandTotalMinggu').textContent = F(grandTotalMinggu, 1);
+        }
+
+        function handleAreaDefinitionChange() {
+            const areaDefinition = document.getElementById('areaDefinition').value;
+            const dimensionsInputs = document.getElementById('dimensionsInputs');
+            const totalAreaInput = document.getElementById('totalAreaInput');
+
+            if (areaDefinition === 'dimensions') {
+                dimensionsInputs.classList.remove('hidden');
+                totalAreaInput.classList.add('hidden');
+            } else {
+                dimensionsInputs.classList.add('hidden');
+                totalAreaInput.classList.remove('hidden');
+            }
+            runSimulation();
+        }
+
+        // --- Event Listeners ---
+        const inputs = document.querySelectorAll('.input-field');
+        inputs.forEach(input => {
+            input.addEventListener('input', runSimulation);
+        });
+        document.getElementById('areaDefinition').addEventListener('change', handleAreaDefinitionChange);
+        document.getElementById('runSimulationBtn').addEventListener('click', runSimulation);
+        
+        // Initial run on page load
+        window.onload = runSimulation;
+    </script>
+</body>
+</html>
